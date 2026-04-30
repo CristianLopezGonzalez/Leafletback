@@ -1,7 +1,7 @@
 import { Response, Request, NextFunction } from "express";
 import { HttpResponse } from "./httpResponse";
 import { config } from "../config/config";
-import { JwtUtils } from "@/utils/jwtUtils";
+import { JwtUtils } from "../utils/jwtUtils";
 
 const httpRes = new HttpResponse();
 

@@ -52,4 +52,19 @@ export class AuthController {
             return next(error);
         }
     }
+
+    static async logoutAll(req: Request, res: Response, next: NextFunction) {
+        try {
+            const userId = req.user?.id;
+            if (!userId) {
+                return http.UNAUTHORIZED(res, 'Usuario no autenticado');
+            }
+
+            await AuthService.logoutAll(userId);
+            return http.OK(res, null, 'Cierre de sesión de todas las sesiones exitoso');
+
+        }catch (error) {
+            return next(error);
+        }
+    }
 }

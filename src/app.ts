@@ -18,9 +18,30 @@ app.get('/api/test', (_req: Request, res: Response) => {
   res.json({ message: 'Backend funcionando' });
 });
 
+
 // Manejo de rutas no encontradas
 app.use((_req: Request, res: Response) => {
   res.status(404).json({ error: 'Ruta no encontrada' });
+});
+
+// Middleware de manejo de errores global
+import { config } from './config/config';
+app.use((err: any, _req: Request, res: Response, _next: any) => {
+
+  const status = err.status || 500;
+  const isDev = config.NODE_ENV === 'development';
+
+  if (isDev) {
+    res.status(status).json({
+      error: err.message || 'Error interno del servidor',
+      stack: err.stack
+    });
+  } else {
+    res.status(status).json({
+      error: 'Error interno del servidor'
+    });
+  }
+  
 });
 
 export default app;

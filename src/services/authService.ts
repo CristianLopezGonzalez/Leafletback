@@ -36,7 +36,7 @@ export class AuthService {
 
         const token = JwtUtils.crearToken(payload)
         const refreshToken = JwtUtils.crearRefreshToken(payload)
-        
+
         const createRefreshToken = await prisma.refreshToken.create({
             data: {
                 token: refreshToken,
@@ -47,12 +47,12 @@ export class AuthService {
         })
 
         return {
-            user:{
+            user: {
                 id: user.id,
                 username: user.username,
                 email: user.email,
                 createdAt: user.createdAt
-            }, 
+            },
             accessToken: token,
             refreshToken: createRefreshToken.token
         };
@@ -88,6 +88,15 @@ export class AuthService {
 
         const token = JwtUtils.crearToken(payload)
         const refreshToken = JwtUtils.crearRefreshToken(payload)
+
+        const createRefreshToken = await prisma.refreshToken.create({
+            data: {
+                token: refreshToken,
+                userId: user.id,
+                expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+            }
+        })
+
         return {
             user: {
                 id: user.id,
@@ -96,7 +105,7 @@ export class AuthService {
                 createdAt: user.createdAt
             },
             accessToken: token,
-            refreshToken: refreshToken
+            refreshToken: createRefreshToken.token
         };
     }
 
@@ -127,6 +136,12 @@ export class AuthService {
     static async logout(refreshToken: string) {
         await prisma.refreshToken.deleteMany({
             where: { token: refreshToken }
+        });
+    }
+
+    static async logoutAll(userId: string) {
+        await prisma.refreshToken.deleteMany({
+            where: { userId }
         });
     }
 }
