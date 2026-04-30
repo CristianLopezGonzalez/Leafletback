@@ -7,6 +7,14 @@ export class UserService {
             const users = await prisma.user.findMany({
                 where: {
                     isOnline: true
+                },
+                select: {
+                    id: true,
+                    isOnline: true,
+                    username: true,
+                    latitude: true,
+                    longitude: true,
+                    updatedAt: true
                 }
             });
 
