@@ -2,6 +2,7 @@ import express,{Express,Response,Request} from 'express';
 import cors from 'cors';
 
 import authRoutes from './routes/authRoutes';
+import userRoutes from './routes/userRoutes';
 
 const app: Express = express();
 
@@ -12,6 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Rutas
 app.use('/api/auth', authRoutes);
+app.use('/api/user', userRoutes);
 
 // Ruta de test para verificar que el backend funciona
 app.get('/api/test', (_req: Request, res: Response) => {
