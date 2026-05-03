@@ -102,9 +102,9 @@ export class MarkerController {
                 return http.UNAUTHORIZED(res, 'Usuario no autenticado');
             }
 
-            const idsFromBody = req.body.ids ?? req.body.markerIds ?? req.body.id;
+            const idsFromBody = req.body.ids
 
-            if (isIdArray(idsFromBody)) {
+            if (Array.isArray(idsFromBody)) {
                 if (!idsFromBody.length) {
                     return http.BAD_REQUEST(res, 'ids es requerido y debe ser un arreglo no vacío');
                 }
@@ -113,17 +113,8 @@ export class MarkerController {
                 return http.OK(res, result, 'Marcadores eliminados exitosamente');
             }
 
-            const idParam = req.params.id;
-            const id = Array.isArray(idParam) ? idParam[0] : idParam;
-
-            const singleId = typeof idsFromBody === 'string' ? idsFromBody : id;
-
-            if (!singleId) {
-                return http.BAD_REQUEST(res, 'id es requerido');
-            }
-
-            const marker = await MarkerService.deleteMarker(userId, singleId);
-            return http.OK(res, marker, 'Marcador eliminado exitosamente');
+           
+            return http.OK(res,'Marcador eliminado exitosamente');
         } catch (error) {
             return next(error);
         }
