@@ -4,11 +4,6 @@ import { MarkerService } from '../services/markerService';
 
 const http = new HttpResponse();
 
-
-const isIdArray = (value: unknown): value is string[] => {
-    return Array.isArray(value);
-};
-
 export class MarkerController {
     static async getMyMarkers(req: Request, res: Response, next: NextFunction) {
         try {
